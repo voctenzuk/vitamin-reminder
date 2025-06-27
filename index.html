@@ -269,7 +269,7 @@
                 </div>
                 <div class="supplements">
                     <div class="supplement-item" id="iron-item">
-                        <div class="checkbox" onclick="toggleSupplement(this)">✓</div>
+                        <div class="checkbox" onclick="toggleSupplement(this)"></div>
                         <div>
                             <div class="supplement-name">Железо + Витамин C</div>
                             <div class="dosage">3 капсулы + 1 капсула</div>
@@ -286,7 +286,7 @@
                 </div>
                 <div class="supplements">
                     <div class="supplement-item">
-                        <div class="checkbox" onclick="toggleSupplement(this)">✓</div>
+                        <div class="checkbox" onclick="toggleSupplement(this)"></div>
                         <div>
                             <div class="supplement-name">Витамин D3+K2</div>
                             <div class="dosage">1 капсула (5000 МЕ)</div>
@@ -294,7 +294,7 @@
                         </div>
                     </div>
                     <div class="supplement-item">
-                        <div class="checkbox" onclick="toggleSupplement(this)">✓</div>
+                        <div class="checkbox" onclick="toggleSupplement(this)"></div>
                         <div>
                             <div class="supplement-name">Витамин B12</div>
                             <div class="dosage">1 таблетка (1000 мкг)</div>
@@ -302,7 +302,7 @@
                         </div>
                     </div>
                     <div class="supplement-item">
-                        <div class="checkbox" onclick="toggleSupplement(this)">✓</div>
+                        <div class="checkbox" onclick="toggleSupplement(this)"></div>
                         <div>
                             <div class="supplement-name">Omega-3</div>
                             <div class="dosage">1 капсула</div>
@@ -361,25 +361,25 @@
             <div class="progress-item">
                 <span>Железо (3 месяца)</span>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 25%"></div>
+                    <div class="progress-fill" style="width: 0%"></div>
                 </div>
-                <span>25%</span>
+                <span>0%</span>
             </div>
             
             <div class="progress-item">
                 <span>Витамин D3 (2 месяца)</span>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 40%"></div>
+                    <div class="progress-fill" style="width: 0%"></div>
                 </div>
-                <span>40%</span>
+                <span>0%</span>
             </div>
             
             <div class="progress-item">
                 <span>Витамин B12 (2 месяца)</span>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 45%"></div>
+                    <div class="progress-fill" style="width: 0%"></div>
                 </div>
-                <span>45%</span>
+                <span>0%</span>
             </div>
             
             <div class="progress-item">
@@ -408,7 +408,7 @@
 
         // Определение дня приема железа
         function updateIronDay() {
-            const startDate = new Date('2024-01-01'); // Замените на дату начала курса
+            const startDate = new Date('2024-12-01'); // Замените на дату начала курса
             const today = new Date();
             const daysDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
             const isIronDay = daysDiff % 2 === 0;
@@ -463,11 +463,37 @@
             });
         }
 
+        // Обновление прогресса курса
+        function updateProgress() {
+            const startDate = new Date('2024-12-01'); // Замените на фактическую дату начала курса
+            const today = new Date();
+            const daysPassed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            
+            // Прогресс железа (3 месяца = 90 дней)
+            const ironProgress = Math.min((daysPassed / 90) * 100, 100);
+            document.querySelector('.progress-item:nth-child(1) .progress-fill').style.width = ironProgress + '%';
+            document.querySelector('.progress-item:nth-child(1) span:last-child').textContent = Math.round(ironProgress) + '%';
+            
+            // Прогресс витамина D3 (2 месяца = 60 дней)
+            const d3Progress = Math.min((daysPassed / 60) * 100, 100);
+            document.querySelector('.progress-item:nth-child(2) .progress-fill').style.width = d3Progress + '%';
+            document.querySelector('.progress-item:nth-child(2) span:last-child').textContent = Math.round(d3Progress) + '%';
+            
+            // Прогресс витамина B12 (2 месяца = 60 дней)
+            const b12Progress = Math.min((daysPassed / 60) * 100, 100);
+            document.querySelector('.progress-item:nth-child(3) .progress-fill').style.width = b12Progress + '%';
+            document.querySelector('.progress-item:nth-child(3) span:last-child').textContent = Math.round(b12Progress) + '%';
+            
+            // Магний (постоянно - всегда 100%)
+            document.querySelector('.progress-item:nth-child(4) .progress-fill').style.width = '100%';
+        }
+
         // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
             updateCurrentDate();
             updateIronDay();
             loadSupplementStates();
+            updateProgress();
             
             // Обновление каждую минуту
             setInterval(updateCurrentDate, 60000);
